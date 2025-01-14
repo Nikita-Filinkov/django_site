@@ -19,4 +19,5 @@ def posts(request):
                      'image': '00009-813486580.png',
                      'description': 'Без комментариев'}
                  }
+
     return render(request, 'posts/posts.html', {'posts': all_posts})
