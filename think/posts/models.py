@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Posts(models.Model):
-    id = models.IntegerField(verbose_name="Id создателя поста")
+    user_id = models.IntegerField(verbose_name="Id создателя поста")
     title = models.CharField(max_length=200, verbose_name="Заголовок поста")
     description = models.TextField(blank=True, verbose_name="Текст поста")
     images = models.ImageField(verbose_name="Картинки")
