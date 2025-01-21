@@ -5,13 +5,20 @@
 
 {% block posts %}
 <p>Место поста</p>
-{% for id, post_info in posts.items %}
+{% for post in posts %}
+{% if not forloop.first %}
     <hr>
-    <h2>Автор поста {{id}}</h2>
-    <li> <h1>{{ post_info.title }}</h1>
-         <img src="/static/posts/images/{{post_info.image}}" width="500" height="500" alt="Чёт не пошло :)">
-        <p>{{ post_info.description }}</p>
-    </li>
+{% endif %}
+        <h2>Автор поста {{post.user_id}}</h2>
+
+        <h1>{{post.title}}</h1>
+         <img src="{{ MEDIA_URL }}posts/images/{{post.images}}" width="500" height="500" alt="Чёт не пошло :)">
+        {% autoescape off %}
+        <p>{{post.description|linebreaks|truncatewords:50}}</p>
+        {% endautoescape %}
+        <div class="clear"></div>
+        <p class="link-read-post"><a href="{{ post.get_absolute_url }}">Читать пост</a></p>
+
 {% endfor %}
 {% endblock %}
 
