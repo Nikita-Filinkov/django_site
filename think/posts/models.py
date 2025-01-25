@@ -22,6 +22,7 @@ class Posts(models.Model):
     time_created = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации")
     is_published = models.BooleanField(choices=Status.choices, default=Status.PUBLISHED)
     cat = models.ForeignKey("Category", on_delete=models.PROTECT, related_name='posts')
+    tags = models.ManyToManyField('TagPost', blank=True, related_name='post')
 
     def __str__(self):
         return self.title
@@ -42,7 +43,22 @@ class Posts(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100, db_index=True)
-    slug = models.SlugField(max_length=20, unique=True, verbose_name="slug_cat", db_index=True)
+    slug = models.SlugField(max_length=20, unique=True, verbose_name="slug_category", db_index=True)
+
+    def get_absolute_url(self):
+        return reverse('post_category', kwargs={'category_slug': self.slug})
 
     def __str__(self):
         return self.name
+
+
+class TagPost(models.Model):
+    tag = models.CharField(max_length=100, db_index=True)
+    slug = models.SlugField(max_length=100, unique=True, verbose_name="slug_category", db_index=True)
+
+    def __str__(self):
+        return self.tag
+
+    def get_absolute_url(self):
+        return reverse('posts_tags', kwargs={'tag_slug': self.slug})
+

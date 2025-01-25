@@ -1,0 +1,6 @@
+{% block posts %}
+ <h2>Список категорий:</h2><br>
+{% for category in categories %}
+    <p class="link-read-post"><a href="{{ category.get_absolute_url }}">{{category.name}}</a></p>
+{% endfor %}
+{% endblock %}

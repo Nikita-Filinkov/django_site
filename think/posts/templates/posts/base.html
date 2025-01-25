@@ -1,4 +1,6 @@
 {% load static %}
+{% load posts_tags %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +9,11 @@
     <link rel="stylesheet" href="{% static 'posts/bootstrap/css/bootstrap.min.css' %}">
 </head>
 <body>
+    {% get_categories %}
+    <P><a href="{% url 'posts' %}">к постам</a></P>
     {% block posts %}
+    {% endblock %}
+    {% block tags %}
     {% endblock %}
 </body>
 </html>
