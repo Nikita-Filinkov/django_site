@@ -1,0 +1,6 @@
+{% block tags %}
+ <h2>Теги:</h2><br>
+{% for tag in tags %}
+    <p class="link-read-post"><a href="{{ tag.get_absolute_url }}">{{tag.name}}</a></p>
+{% endfor %}
+{% endblock %}

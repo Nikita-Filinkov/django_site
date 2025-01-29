@@ -20,6 +20,7 @@ class Posts(models.Model):
     images = models.ImageField(upload_to='posts/images/', verbose_name="Картинки")
     post_slug = models.SlugField(max_length=20, unique=True, verbose_name="Slug_id", db_index=True)
     time_created = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации")
+    count_views = models.IntegerField(blank=True, default=0)
     is_published = models.BooleanField(choices=Status.choices, default=Status.PUBLISHED)
     cat = models.ForeignKey("Category", on_delete=models.PROTECT, related_name='posts')
     tags = models.ManyToManyField('TagPost', blank=True, related_name='post')

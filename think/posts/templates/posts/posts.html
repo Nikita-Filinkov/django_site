@@ -1,8 +1,6 @@
 {% extends 'posts/base.html' %}
 
 {% block title %}<title>Стена постов</title>{% endblock %}
-
-
 {% block posts %}
 
 <p>Место поста</p>
@@ -17,16 +15,14 @@
         {% autoescape off %}
         <p>{{post.description|linebreaks|truncatewords:50}}</p>
         {% endautoescape %}
-
+        {% if post.tags.exists %}
         {% with post.tags.all as tags %}
-        {% if tags %}
                 <p>Теги:</p>
                 {% for tag in tags %}
-                        <p class="link-read-post"><a href="{{ tag.get_absolute_url }}">{{tag.tag}}</a></p>
-        {% endfor %}
+                <p class="link-read-post"><a href="{{ tag.get_absolute_url }}">{{tag.tag}}</a></p>
+                {% endfor %}
+        {% endwith %}
         {% endif %}
-        {%endwith%}
-
         <p>Опубликовано: {{post.time_created|date:"d.m.Y H:i:s"}}</p>
         <div class="clear"></div>
         <p class="link-read-post"><a href="{{ post.get_absolute_url }}">Читать пост</a></p>
@@ -34,11 +30,6 @@
 {% endfor %}
 {% endblock %}
 
-<!--{% block tags %}-->
-<!--{% with posts.tags.objects.all as tags %}-->
-<!--{% for tag in tags %}-->
-<!--        {{tag.tag}}-->
-<!--&lt;!&ndash;        <p class="link-read-post"><a href="{{ tag.get_absolute_url }}">{{tag.tag}}</a></p>&ndash;&gt;-->
-<!--{% endfor %}-->
-<!--{%endwith%}-->
-<!--{% endblock %}-->
+
+
+
