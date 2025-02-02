@@ -64,6 +64,10 @@ class TagPost(models.Model):
     tag = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField(max_length=100, unique=True, verbose_name="slug_category", db_index=True)
 
+    class Meta:
+        verbose_name = 'Теги'
+        verbose_name_plural = 'Теги'
+
     def __str__(self):
         return self.tag
 
