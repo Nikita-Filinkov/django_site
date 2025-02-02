@@ -27,6 +27,10 @@ urlpatterns = [
     path('posts/', include('posts.urls')),
 ]
 
+admin.site.site_header = 'Панель администрирования'
+admin.site.index_title = 'Панель управления'
+
+
 if settings.DEBUG:
     import mimetypes
     mimetypes.add_type("application/javascript", ".js", True)

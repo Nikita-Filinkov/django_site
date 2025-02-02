@@ -21,7 +21,8 @@ class Posts(models.Model):
     post_slug = models.SlugField(max_length=20, unique=True, verbose_name="Slug_id", db_index=True)
     time_created = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации")
     count_views = models.IntegerField(blank=True, default=0)
-    is_published = models.BooleanField(choices=Status.choices, default=Status.PUBLISHED)
+    is_published = models.BooleanField(choices=tuple(map(lambda x: (bool(x[0]), x[1]), Status.choices)),
+                                       default=Status.PUBLISHED)
     cat = models.ForeignKey("Category", on_delete=models.PROTECT, related_name='posts')
     tags = models.ManyToManyField('TagPost', blank=True, related_name='post')
 
@@ -35,6 +36,8 @@ class Posts(models.Model):
         return reverse('post_slug', kwargs={'post_slug': self.post_slug})
 
     class Meta:
+        verbose_name = 'Лента постов'
+        verbose_name_plural = 'Лента постов'
         ordering = ['-time_created']
 
         indexes = [
@@ -43,11 +46,15 @@ class Posts(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=100, db_index=True)
+    name = models.CharField(max_length=100, db_index=True, verbose_name="Категория")
     slug = models.SlugField(max_length=20, unique=True, verbose_name="slug_category", db_index=True)
 
     def get_absolute_url(self):
         return reverse('post_category', kwargs={'category_slug': self.slug})
+
+    class Meta:
+        verbose_name = 'Категории'
+        verbose_name_plural = 'Категории'
 
     def __str__(self):
         return self.name
