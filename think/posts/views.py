@@ -27,7 +27,7 @@ def show_post(request, post_slug):
 
 
 def show_category(request, category_slug):
-    posts_on_category = Posts.objects.filter(cat__slug=category_slug)
+    posts_on_category = Posts.objects.filter(category__slug=category_slug)
     # posts_on_category = Posts.objects.all()
     # posts_on_category = get_object_or_404(Category, cat_slug=cat_slug)
     return render(request, 'posts/posts.html',

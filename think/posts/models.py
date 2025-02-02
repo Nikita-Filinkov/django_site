@@ -23,7 +23,8 @@ class Posts(models.Model):
     count_views = models.IntegerField(blank=True, default=0)
     is_published = models.BooleanField(choices=tuple(map(lambda x: (bool(x[0]), x[1]), Status.choices)),
                                        default=Status.PUBLISHED)
-    cat = models.ForeignKey("Category", on_delete=models.PROTECT, related_name='posts')
+    category = models.ForeignKey("Category", on_delete=models.PROTECT, null=True, related_name='posts',
+                                 verbose_name='Категория')
     tags = models.ManyToManyField('TagPost', blank=True, related_name='post')
 
     def __str__(self):

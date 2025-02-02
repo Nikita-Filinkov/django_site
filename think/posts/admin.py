@@ -8,7 +8,7 @@ from .models import Posts, Category, TagPost
 
 @admin.register(Posts)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'title', 'time_created', 'is_published', 'cat', 'brief_info')
+    list_display = ('user_id', 'title', 'time_created', 'is_published', 'category', 'brief_info')
     list_display_links = ('user_id', 'title')
     ordering = ['-time_created']
     list_editable = ('is_published',)
@@ -17,9 +17,9 @@ class PostAdmin(admin.ModelAdmin):
     @admin.display(description="Количество тегов")
     def brief_info(self, posts: Posts):
         # count_tags = posts.objects.aggregate(Count('tags'))
-        tags = posts.tags
+        tags = posts.tags.aggregate(count_tags=Count('tag'))
         print(tags)
-        return f"Количество тегов у поста {tags}."
+        return f"Количество тегов у поста: {tags['count_tags']}."
 # admin.site.register(Posts)
 
 
