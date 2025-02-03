@@ -25,7 +25,7 @@ class Posts(models.Model):
                                        default=Status.PUBLISHED)
     category = models.ForeignKey("Category", on_delete=models.PROTECT, null=True, related_name='posts',
                                  verbose_name='Категория')
-    tags = models.ManyToManyField('TagPost', blank=True, related_name='post')
+    tags = models.ManyToManyField('TagPost', blank=True, null=True, related_name='post')
 
     def __str__(self):
         return self.title

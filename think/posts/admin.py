@@ -5,6 +5,28 @@ from .models import Posts, Category, TagPost
 
 
 # Register your models here.
+class FilterTagsCategory(admin.SimpleListFilter):
+    title = 'Наличие тегов или категории'
+    parameter_name = 'status'
+
+    def lookups(self, request, model_admin):
+        return [
+            ('hasnt_tags', 'без тегов'),
+            ('has_tags', 'есть теги'),
+            ('hasnt_category', 'без категории'),
+            ('has_category', 'есть привязка к категории'),
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value() == 'hasnt_tags':
+            return queryset.filter(tags__isnull=True)
+        elif self.value() == 'has_tags':
+            return queryset.filter(tags__isnull=False)
+        if self.value() == 'hasnt_category':
+            return queryset.filter(tags__isnull=True)
+        elif self.value() == 'has_category':
+            return queryset.filter(tags__isnull=False)
+
 
 @admin.register(Posts)
 class PostAdmin(admin.ModelAdmin):
@@ -15,6 +37,7 @@ class PostAdmin(admin.ModelAdmin):
     list_per_page = 5
     actions = ['set_published', 'set_draft']
     search_fields = ['title', 'category__name']
+    list_filter = [FilterTagsCategory, 'category__name', 'is_published']
 
     @admin.display(description="Количество тегов")
     def brief_info(self, posts: Posts):
