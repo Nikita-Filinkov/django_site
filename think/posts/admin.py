@@ -14,6 +14,7 @@ class PostAdmin(admin.ModelAdmin):
     list_editable = ('is_published', 'category')
     list_per_page = 5
     actions = ['set_published', 'set_draft']
+    search_fields = ['title', 'category__name']
 
     @admin.display(description="Количество тегов")
     def brief_info(self, posts: Posts):
