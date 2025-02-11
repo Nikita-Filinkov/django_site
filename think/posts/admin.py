@@ -11,10 +11,10 @@ class FilterTagsCategory(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         return [
-            ('hasnt_tags', 'без тегов'),
-            ('has_tags', 'есть теги'),
-            ('hasnt_category', 'без категории'),
-            ('has_category', 'есть привязка к категории'),
+            ('hasnt_tags', 'Без тегов'),
+            ('has_tags', 'Есть теги'),
+            ('hasnt_category', 'Без категории'),
+            ('has_category', 'Есть привязка к категории'),
         ]
 
     def queryset(self, request, queryset):
@@ -23,9 +23,9 @@ class FilterTagsCategory(admin.SimpleListFilter):
         elif self.value() == 'has_tags':
             return queryset.filter(tags__isnull=False)
         if self.value() == 'hasnt_category':
-            return queryset.filter(tags__isnull=True)
+            return queryset.filter(category__isnull=True)
         elif self.value() == 'has_category':
-            return queryset.filter(tags__isnull=False)
+            return queryset.filter(category__isnull=False)
 
 
 @admin.register(Posts)
