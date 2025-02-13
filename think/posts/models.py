@@ -9,6 +9,16 @@ class PublishedManager(models.Manager):
         return super().get_queryset().filter(is_published=Posts.Status.PUBLISHED)
 
 
+def translit_to_eng(s: str) -> str:
+    d = {'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd',
+         'е': 'e', 'ё': 'yo', 'ж': 'zh', 'з': 'z', 'и': 'i', 'к': 'k',
+         'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r',
+         'с': 's', 'т': 't', 'у': 'u', 'ф': 'f', 'х': 'h', 'ц': 'c', 'ч': 'ch',
+         'ш': 'sh', 'щ': 'shch', 'ь': '', 'ы': 'y', 'ъ': '', 'э': 'r', 'ю': 'yu', 'я': 'ya'}
+
+    return "".join(map(lambda x: d[x] if d.get(x, False) else x, s.lower()))
+
+
 class Posts(models.Model):
     class Status(models.IntegerChoices):
         DRAFT = 0, 'Черновик'
@@ -18,14 +28,18 @@ class Posts(models.Model):
     title = models.CharField(max_length=200, verbose_name="Заголовок поста")
     description = models.TextField(blank=True, verbose_name="Текст поста")
     images = models.ImageField(upload_to='posts/images/', verbose_name="Картинки")
-    post_slug = models.SlugField(max_length=20, unique=True, verbose_name="Slug_id", db_index=True)
+    post_slug = models.SlugField(max_length=20, unique=True, verbose_name="Slug_id", db_index=True, blank=True)
     time_created = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации")
-    count_views = models.IntegerField(blank=True, default=0)
+    count_views = models.IntegerField(blank=True, default=0, verbose_name="Количество просмотров")
     is_published = models.BooleanField(choices=map(lambda x: (bool(x[0]), x[1]), Status.choices),
-                                       default=Status.PUBLISHED)
+                                       default=Status.PUBLISHED, verbose_name="Статус")
     category = models.ForeignKey("Category", on_delete=models.PROTECT, null=True, related_name='posts',
-                                 verbose_name='Категория')
+                                 verbose_name='Категория', blank=True)
     tags = models.ManyToManyField('TagPost', blank=True, null=True, related_name='post')
+
+    def save(self, *args, **kwargs):
+        self.post_slug = translit_to_eng(self.title)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title

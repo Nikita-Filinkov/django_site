@@ -31,6 +31,13 @@ class FilterTagsCategory(admin.SimpleListFilter):
 @admin.register(Posts)
 class PostAdmin(admin.ModelAdmin):
     list_display = ('user_id', 'title', 'time_created', 'is_published', 'category', 'brief_info')
+
+    readonly_fields = ['count_views']
+
+    fields = ['user_id', 'title', 'description', 'images', 'is_published', 'tags',
+              'category', 'post_slug', 'count_views']
+    prepopulated_fields = {'post_slug': ('title', )}
+    filter_horizontal = ['tags']
     list_display_links = ('user_id', 'title')
     ordering = ['-time_created']
     list_editable = ('is_published', 'category')
@@ -67,12 +74,14 @@ class PostAdmin(admin.ModelAdmin):
 
 @admin.register(TagPost)
 class TagPostAdmin(admin.ModelAdmin):
+    fields = ['tag']
     list_display = ('id', 'tag')
     list_display_links = ('id', 'tag')
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
+    exclude = ['slug']
     list_display = ('id', 'name')
     list_display_links = ('id', 'name')
 
