@@ -1,5 +1,10 @@
+import re
+
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
+from django.utils.deconstruct import deconstructible
+
 
 # Create your models here.
 
@@ -7,6 +12,22 @@ from django.urls import reverse
 class PublishedManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_published=Posts.Status.PUBLISHED)
+
+
+@deconstructible
+class RussianValidator:
+    code = 'russian'
+
+    def __init__(self, message=None):
+        self.message = message if message else 'Должны быть латинские буквы'
+
+    def __call__(self, value):
+        if has_cyrillic(value):
+            raise ValidationError(self.message, code=self.code, params={'value': value})
+
+
+def has_cyrillic(text):
+    return bool(re.search('[а-яА-Я]', text))
 
 
 def translit_to_eng(s: str) -> str:
@@ -24,10 +45,11 @@ class Posts(models.Model):
         DRAFT = 0, 'Черновик'
         PUBLISHED = 1, 'Опубликовано'
 
-    user_id = models.IntegerField(verbose_name="Id создателя поста")
+    user_id = models.IntegerField(verbose_name="Id создателя поста", default=0)
     title = models.CharField(max_length=200, verbose_name="Заголовок поста")
     description = models.TextField(blank=True, verbose_name="Текст поста")
-    images = models.ImageField(upload_to='posts/images/', verbose_name="Картинки")
+    images = models.ImageField(upload_to='posts/images/', verbose_name="Картинки",
+                               default='Снимок экрана 2023-12-20 194130.png')
     post_slug = models.SlugField(max_length=20, unique=True, verbose_name="Slug_id", db_index=True, blank=True)
     time_created = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации")
     count_views = models.IntegerField(blank=True, default=0, verbose_name="Количество просмотров")
@@ -38,7 +60,8 @@ class Posts(models.Model):
     tags = models.ManyToManyField('TagPost', blank=True, null=True, related_name='post')
 
     def save(self, *args, **kwargs):
-        self.post_slug = translit_to_eng(self.title)
+        if not self.post_slug or not translit_to_eng(self.post_slug):
+            self.post_slug = translit_to_eng(self.title)
         super().save(*args, **kwargs)
 
     def __str__(self):

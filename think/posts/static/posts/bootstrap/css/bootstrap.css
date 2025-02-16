@@ -505,6 +505,10 @@ textarea {
   resize: vertical;
 }
 
+ .my-textarea {
+    margin: 0;
+}
+
 fieldset {
   min-width: 0;
   padding: 0;

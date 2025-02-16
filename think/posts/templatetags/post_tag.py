@@ -1,10 +1,10 @@
 from django import template
-from posts.models import Category
+from posts.models import TagPost
 
 register = template.Library()
 
 
-@register.inclusion_tag('posts/list_categories.html')
+@register.inclusion_tag('posts/list_tags.html')
 def get_tags():
-    tag = Category.objects.all()
-    return {'categories': categories}
+    tag = TagPost.objects.all()
+    return {'tag': tag}

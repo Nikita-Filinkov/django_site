@@ -1,0 +1,25 @@
+{% extends 'posts/base.html' %}
+
+
+{% block title %} <title>{{ title }}</title> {% endblock %}
+
+{% block posts %}
+<h1>{{ title }}</h1>
+<form action="" method="POST">
+    {% csrf_token %}
+    {% if message %}
+    <hr>
+    <h1>{{message}}</h1>
+    <hr>
+    {% endif %}
+    {% for f in form %}
+    <label for="{{ f.id_for_label }}">{{ f.label }}</label><br>
+    <p>{{ f }}</p>
+    {% if forloop.last %}
+    <div class="fieldWrapper">{{ error_message }}</div>
+    {% endif %}
+    {% endfor %}
+    <p><button type="submit">Отправить</button></p>
+
+</form>
+{% endblock %}

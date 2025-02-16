@@ -6,11 +6,12 @@
 <head>
     <meta charset="UTF-8">
      {% block title %} {% endblock %}
-    <link rel="stylesheet" href="{% static 'posts/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'posts/bootstrap/css/bootstrap.css' %}">
 </head>
 <body>
     {% get_categories %}
-    <P><a href="{% url 'posts' %}">к постам</a></P>
+    <P><a href="{% url 'add' %}">Создать свой пост</a></P>
+    <P><a href="{% url 'posts' %}">К постам</a></P>
     {% block posts %}
     {% endblock %}
     {% block tags %}
