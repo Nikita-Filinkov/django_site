@@ -5,8 +5,9 @@
 
 {% block posts %}
 <h1>{{ title }}</h1>
-<form action="" method="POST">
+<form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
+    <div class="form-error">{{ form.non_field_errors }}</div>
     {% if message %}
     <hr>
     <h1>{{message}}</h1>
@@ -16,7 +17,7 @@
     <label for="{{ f.id_for_label }}">{{ f.label }}</label><br>
     <p>{{ f }}</p>
     {% if forloop.last %}
-    <div class="fieldWrapper">{{ error_message }}</div>
+    <div class="form-error">{{ f.errors }}</div>
     {% endif %}
     {% endfor %}
     <p><button type="submit">Отправить</button></p>

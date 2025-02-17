@@ -1,5 +1,6 @@
 from django.contrib import admin, messages
 from django.db.models import Count
+from django.utils.safestring import mark_safe
 
 from .models import Posts, Category, TagPost
 
@@ -30,7 +31,7 @@ class FilterTagsCategory(admin.SimpleListFilter):
 
 @admin.register(Posts)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'title', 'time_created', 'is_published', 'category', 'brief_info')
+    list_display = ('user_id', 'title', 'images_posts', 'time_created', 'is_published', 'category', 'brief_info')
 
     readonly_fields = ['count_views']
 
@@ -50,6 +51,10 @@ class PostAdmin(admin.ModelAdmin):
     def brief_info(self, posts: Posts):
         tags = posts.tags.aggregate(count_tags=Count('tag'))
         return f"Количество тегов у поста: {tags['count_tags']}."
+
+    @admin.display(description="Картинка поста")
+    def images_posts(self, posts: Posts):
+        return mark_safe(f'<img src="{posts.images.url}" width=50>')
 
     @admin.action(description='Опубликовать пост')
     def set_published(self, request, queryset):

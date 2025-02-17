@@ -57,7 +57,7 @@ class Posts(models.Model):
                                        default=Status.PUBLISHED, verbose_name="Статус")
     category = models.ForeignKey("Category", on_delete=models.PROTECT, null=True, related_name='posts',
                                  verbose_name='Категория', blank=True)
-    tags = models.ManyToManyField('TagPost', blank=True, null=True, related_name='post')
+    tags = models.ManyToManyField('TagPost', blank=True, null=True, related_name='post', verbose_name='Теги')
 
     def save(self, *args, **kwargs):
         if not self.post_slug or not translit_to_eng(self.post_slug):

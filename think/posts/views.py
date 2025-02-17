@@ -45,30 +45,19 @@ def show_posts_tags(request, tag_slug):
 
 def add_post(request):
     if request.method == 'POST':
-        form = AddPostForm(request.POST)
-        # print(request.POST)
-        # print(form.is_valid())
+        form = AddPostForm(request.POST, request.FILES)
         if form.is_valid():
-            try:
-                print(form.cleaned_data)
-                data = form.cleaned_data
-                post = Posts.objects.create(title=data['title'],
-                                            description=data['description'],
-                                            post_slug=data['post_slug'],
-                                            category=data['category'],
-                                            is_published=data['is_published'])
-                post.tags.set(data['tags'])
-            #               Posts.objects.create(**form.cleaned_data)
-                return redirect('posts')
-            except Exception as e:
-                form.add_error(None, 'Ошибка добавления поста: {}'.format(str(e)))
-                print('Error:', str(e))
-                return render(request, 'posts/add_post.html',
-                              {'title': 'Добавление поста', 'form': form, 'error_message': str(e)})
+            data = form.cleaned_data
+            new_post = form.save(commit=False)
+            new_post.save()
+            print(data['images'])
+            # new_post.images = data['images']
+            new_post.tags.set(data['tags'])
+            form.save_m2m()
+            return redirect('posts')
         else:
             form = AddPostForm()
             return render(request, 'posts/add_post.html',
                           {'title': 'Добавление поста', 'form': form, 'message': 'Не валидный ввод'})
-    else:
-        form = AddPostForm()
+    form = AddPostForm()
     return render(request, 'posts/add_post.html', {'title': 'Добавление поста', 'form': form})

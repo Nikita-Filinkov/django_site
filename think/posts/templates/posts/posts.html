@@ -11,7 +11,7 @@
         <h2>Автор поста {{post.user_id}}</h2>
 
         <h1>{{post.title}}</h1>
-         <img src="{{ MEDIA_URL }}posts/images/{{post.images}}" width="500" height="500" alt="Чёт не пошло :)">
+         <img src="{{post.images.url}}" width="500" height="500" alt="Чёт не пошло :)">
         {% autoescape off %}
         <p>{{post.description|linebreaks|truncatewords:50}}</p>
         {% endautoescape %}
