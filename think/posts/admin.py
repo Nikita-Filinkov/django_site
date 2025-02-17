@@ -33,9 +33,9 @@ class FilterTagsCategory(admin.SimpleListFilter):
 class PostAdmin(admin.ModelAdmin):
     list_display = ('user_id', 'title', 'images_posts', 'time_created', 'is_published', 'category', 'brief_info')
 
-    readonly_fields = ['count_views']
+    readonly_fields = ['count_views', 'images_posts']
 
-    fields = ['user_id', 'title', 'description', 'images', 'is_published', 'tags',
+    fields = ['user_id', 'title', 'images_posts', 'description', 'images', 'is_published', 'tags',
               'category', 'post_slug', 'count_views']
     prepopulated_fields = {'post_slug': ('title', )}
     filter_horizontal = ['tags']
@@ -46,6 +46,7 @@ class PostAdmin(admin.ModelAdmin):
     actions = ['set_published', 'set_draft']
     search_fields = ['title', 'category__name']
     list_filter = [FilterTagsCategory, 'category__name', 'is_published']
+    save_on_top = True
 
     @admin.display(description="Количество тегов")
     def brief_info(self, posts: Posts):
