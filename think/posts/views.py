@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import TemplateView, ListView, DetailView, FormView, CreateView
+from django.views.generic import TemplateView, ListView, DetailView, FormView, CreateView, UpdateView, DeleteView
 from django.views import View
 from django.urls import reverse_lazy
 from .forms import AddPostForm
@@ -69,5 +69,41 @@ class AddPost(CreateView):
     success_url = reverse_lazy('posts')
     extra_context = {
         'title': 'Добавление поста',
-        'message': 'Не валидный ввод',
+        'message': 'Не валидный ввод'
     }
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['forms'] = context.pop('form')
+        return context
+
+
+class UpdatePost(UpdateView):
+    model = Posts
+    fields = ['title', 'description', 'images', 'is_published', 'category', 'tags']
+    template_name = 'posts/add_post.html'
+    success_url = reverse_lazy('posts')
+    extra_context = {
+        'title': 'Редактирование поста',
+        'message': 'Не валидный ввод'
+    }
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['forms'] = context.pop('form')
+        return context
+
+
+class DeletePost(DeleteView):
+    model = Posts
+    fields = ['title']
+    template_name = 'posts/delete_post.html'
+    context_object_name = 'post'
+    success_url = reverse_lazy('posts')
+    extra_context = {
+        'title': 'Удалить пост',
+        'message': 'Не валидный ввод'
+    }
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(Posts.published, pk=self.kwargs['pk'])

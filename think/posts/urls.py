@@ -8,6 +8,8 @@ urlpatterns = [
     path('category/<slug:category_slug>', views.Show_on_Category.as_view(), name='post_category'),
     path('<slug:post_slug>', views.ShowPost.as_view(), name='post_slug'),
     path('tags/<slug:tag_slug>', views.Show_on_Tag.as_view(), name='posts_tags'),
+    path('edit/<int:pk>/', views.UpdatePost.as_view(), name='edit_post'),
+    path('delete/<int:pk>/', views.DeletePost.as_view(), name='delete_post'),
 ]
 
 
