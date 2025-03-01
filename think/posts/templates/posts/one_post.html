@@ -1,14 +1,14 @@
 {% extends 'posts/base.html' %}
 
-{% block title %}<title>Стена постов</title>{% endblock %}
+{% block title %}<title>{{title}}</title>{% endblock %}
 
 
 {% block posts %}
 
-<h2>Автор поста {{user_id}}</h2>
+<h2>Автор поста {{post.user_id}}</h2>
 
-<h1>{{title}}</h1>
- <img src="{{image.url}}" width="500" height="500" alt="Чёт не пошло :)">
-<p>{{description}}</p>
+<h1>{{post.title}}</h1>
+ <img src="{{post.images.url}}" width="500" height="500" alt="Чёт не пошло :)">
+<p>{{post.description}}</p>
 
 {% endblock %}

@@ -74,6 +74,6 @@ class AddPostForm(forms.ModelForm):
     def clean_title(self):
         title = self.cleaned_data['title']
         if len(title) > 30:
-            raise ValidationError("Слишком длинны названия, никому не нравятся")
+            raise ValidationError("Слишком длинные названия, никому не нравятся")
 
         return title
