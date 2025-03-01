@@ -61,7 +61,7 @@ class AddPostForm(forms.ModelForm):
 
     class Meta:
         model = Posts
-        fields = ['title', 'description', 'post_slug', 'images', 'is_published', 'category', 'tags']
+        fields = ['title', 'description', 'post_slug', 'images', 'is_published', 'category']
         widgets = {
             'description': forms.Textarea(attrs={'cols': 50, 'rows': 5}),
             'is_published': forms.CheckboxInput()

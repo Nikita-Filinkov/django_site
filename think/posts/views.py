@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import TemplateView, ListView, DetailView, FormView, CreateView
 from django.views import View
-
+from django.urls import reverse_lazy
 from .forms import AddPostForm
 from .models import Posts, Category, TagPost
 from django.conf import settings
@@ -63,22 +63,11 @@ class Show_on_Tag(ListView):
         return Posts.published.filter(tags__slug=self.kwargs['tag_slug'])
 
 
-class AddPost(View):
-    def get(self, request):
-        form = AddPostForm()
-        return render(request, 'posts/add_post.html', {'title': 'Добавление поста', 'form': form})
-
-    def post(self, request):
-        form = AddPostForm(request.POST, request.FILES)
-        if form.is_valid():
-            data = form.cleaned_data
-            new_post = form.save(commit=False)
-            new_post.save()
-            print(data['images'])
-            # new_post.images = data['images']
-            new_post.tags.set(data['tags'])
-            form.save_m2m()
-            return redirect('posts')
-
-        return render(request, 'posts/add_post.html',
-                      {'title': 'Добавление поста', 'form': form, 'message': 'Не валидный ввод'})
+class AddPost(CreateView):
+    form_class = AddPostForm
+    template_name = 'posts/add_post.html'
+    success_url = reverse_lazy('posts')
+    extra_context = {
+        'title': 'Добавление поста',
+        'message': 'Не валидный ввод',
+    }
