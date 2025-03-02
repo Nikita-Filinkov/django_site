@@ -60,7 +60,7 @@ class Posts(models.Model):
     tags = models.ManyToManyField('TagPost', blank=True, null=True, related_name='post', verbose_name='Теги')
 
     def save(self, *args, **kwargs):
-        if not self.post_slug or not has_cyrillic(self.post_slug):
+        if not self.post_slug or has_cyrillic(self.post_slug):
             self.post_slug = translit_to_eng(self.title)
         super().save(*args, **kwargs)
 

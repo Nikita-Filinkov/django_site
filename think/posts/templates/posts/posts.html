@@ -1,6 +1,6 @@
 {% extends 'posts/base.html' %}
 
-{% block title %}<title>Стена постов</title>{% endblock %}
+{% block title %}<title>{{title}}</title>{% endblock %}
 {% block posts %}
 
 <p>Место поста</p>
@@ -15,6 +15,11 @@
         {% autoescape off %}
         <p>{{post.description|linebreaks|truncatewords:50}}</p>
         {% endautoescape %}
+        <div>Категория:
+                <p class="link-read-post">
+                <a href="{{ post.category.get_absolute_url }}">{{post.category.name}}</a>
+                </p>
+        </div>
         {% if post.tags.exists %}
         {% with post.tags.all as tags %}
                 <p>Теги:</p>
