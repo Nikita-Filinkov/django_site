@@ -12,9 +12,15 @@
     {% get_categories %}
     <P><a href="{% url 'add' %}">Создать свой пост</a></P>
     <P><a href="{% url 'posts' %}">К постам</a></P>
+
     {% block posts %}
     {% endblock %}
+
     {% block tags %}
     {% endblock %}
+
+    {% block navigation %}
+    {% endblock %}
+
 </body>
 </html>

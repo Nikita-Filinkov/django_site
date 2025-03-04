@@ -2,6 +2,7 @@ class DataMixin:
     title_page = None
     extra_context = {}
     error_message = None
+    paginate_by = 3
 
     def __init__(self):
         if self.title_page:

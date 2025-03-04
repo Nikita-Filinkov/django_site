@@ -15,14 +15,13 @@ def index(request):
     return render(request, 'posts/index.html', {})
 
 
-class PostsHome(DataMixin, TemplateView):
+class PostsHome(DataMixin, ListView):
     template_name = 'posts/posts.html'
+    context_object_name = 'posts'
     title_page = 'Посты'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['posts'] = Posts.published.all()
-        return context
+    def get_queryset(self):
+        return Posts.published.all()
 
 
 class ShowPost(DataMixin, DetailView):
