@@ -1,0 +1,11 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+
+    <form id="logoutForm" method="post" action="{% url 'users:logout' %}">
+        {% csrf_token %}
+        <li class="last">{{ user.username }} |
+            <a href="#" onclick="document.getElementById('logoutForm').submit(); return false;">Выйти</a></li>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'users/base.html' %}
+
+{% block title %}<title>{{ title }}</title> {% endblock %}
+
+{% block content %}
+<h1>{{ title }}</h1>
+<form action="" method="POST">
+    {% csrf_token %}
+
+    <div class="form-error">{{ form.non_field_errors }}</div>
+    {% if form.non_field_errors %}
+    <hr>
+    {% endif %}
+    <input type="hidden" name="next" value="{{ next }}" />
+    {% for f in form %}
+    <label for="{{ f.id_for_label }}">{{ f.label }}</label><br>
+    <p>{{ f }}</p>
+    {% endfor %}
+    <p><button type="submit">Войти</button></p>
+
+</form>
+{% endblock %}
