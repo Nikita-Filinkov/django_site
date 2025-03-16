@@ -139,7 +139,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'posts'  # имя маршрута
 LOGOUT_REDIRECT_URL = 'posts'  # имя маршрута
-LOGIN_URL = 'users:log'
+# LOGIN_URL = 'users:log'
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
