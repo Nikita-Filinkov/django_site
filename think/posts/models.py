@@ -1,5 +1,6 @@
 import re
 
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
@@ -45,7 +46,7 @@ class Posts(models.Model):
         DRAFT = 0, 'Черновик'
         PUBLISHED = 1, 'Опубликовано'
 
-    user_id = models.IntegerField(verbose_name="Id создателя поста", default=0)
+    user_name = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, related_name='posts', null=True)
     title = models.CharField(max_length=200, verbose_name="Заголовок поста")
     description = models.TextField(blank=True, verbose_name="Текст поста")
     images = models.ImageField(upload_to='posts/images/', verbose_name="Картинки",

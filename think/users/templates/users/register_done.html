@@ -1,0 +1,9 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+
+<h1>Регистрация прошла успешно</h1>
+<p>
+    <a href="{% url 'users:login' %}">Войти</a>
+</p>
+{% endblock %}

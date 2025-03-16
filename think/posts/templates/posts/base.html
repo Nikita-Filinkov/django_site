@@ -1,14 +1,31 @@
 {% load static %}
 {% load posts_category %}
+{% load logout_tag %}
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
      {% block title %} {% endblock %}
     <link rel="stylesheet" href="{% static 'posts/bootstrap/css/bootstrap.css' %}">
 </head>
+
 <body>
+    {% if user.is_authenticated %}
+
+     <form id="logoutForm" method="post" action="{% url 'users:logout' %}">
+        {% csrf_token %}
+        <li class="last"><a href="{% url 'users:profile' %}">{{ user.username }}</a> |
+            <a href="#" onclick="document.getElementById('logoutForm').submit(); return false;">Выйти</a></li>
+    </form>
+
+    {% else %}
+
+        <li><a href="{% url 'users:login' %}">Войти</a> | <a href="{% url 'users:registration' %}">Регистрация</a></li>
+
+    {% endif %}
+
     {% get_categories %}
     <P><a href="{% url 'add' %}">Создать свой пост</a></P>
     <P><a href="{% url 'posts' %}">К постам</a></P>

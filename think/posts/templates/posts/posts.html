@@ -1,6 +1,6 @@
 {% extends 'posts/base.html' %}
 
-{% block title %}<title>{{title}}</title>{% endblock %}
+{% block title %}<title>{{ title }}</title>{% endblock %}
 {% block posts %}
 
 <p>Место поста</p>
@@ -8,7 +8,7 @@
 {% if not forloop.first %}
     <hr>
 {% endif %}
-        <h2>Автор поста {{post.user_id}}</h2>
+        <h2>Автор поста: {{post.user_name|default:"Неизвестен"}}</h2>
 
         <h1>{{post.title}}</h1>
          <img src="{{post.images.url}}" width="500" height="500" alt="Чёт не пошло :)">

@@ -31,15 +31,15 @@ class FilterTagsCategory(admin.SimpleListFilter):
 
 @admin.register(Posts)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'title', 'images_posts', 'time_created', 'is_published', 'category', 'brief_info')
+    list_display = ('user_name', 'title', 'images_posts', 'time_created', 'is_published', 'category', 'brief_info')
 
     readonly_fields = ['count_views', 'images_posts']
 
-    fields = ['user_id', 'title', 'images_posts', 'description', 'images', 'is_published', 'tags',
+    fields = ['user_name', 'title', 'images_posts', 'description', 'images', 'is_published', 'tags',
               'category', 'post_slug', 'count_views']
     prepopulated_fields = {'post_slug': ('title', )}
     filter_horizontal = ['tags']
-    list_display_links = ('user_id', 'title')
+    list_display_links = ('user_name', 'title')
     ordering = ['-time_created']
     list_editable = ('is_published', 'category')
     list_per_page = 5

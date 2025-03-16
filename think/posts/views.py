@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView, ListView, DetailView, FormView, CreateView, UpdateView, DeleteView
 from django.views import View
@@ -69,28 +71,33 @@ class Show_on_Tag(DataMixin, ListView):
         return Posts.published.filter(tags__slug=self.kwargs['tag_slug'])
 
 
-class AddPost(DataMixin, FormView):
+class AddPost(LoginRequiredMixin, DataMixin, FormView):
     form_class = AddPostForm
     template_name = 'posts/add_post.html'
     success_url = reverse_lazy('posts')
     title_page = 'Добавление поста'
 
+    login_url = '/users/login'
+
     def form_valid(self, form):
         data = form.cleaned_data
         new_post = form.save(commit=False)
+        new_post.user_name = self.request.user
         new_post.save()
         new_post.tags.set(data['tags'])
         form.save_m2m()
         return super().form_valid(form)
 
 
-class UpdatePost(DataMixin, UpdateView):
+class UpdatePost(LoginRequiredMixin, DataMixin, UpdateView):
     model = Posts
     fields = ['title', 'description', 'images', 'is_published', 'category', 'tags']
     template_name = 'posts/add_post.html'
     success_url = reverse_lazy('posts')
     slug_url_kwarg = 'post_slug'
     title_page = 'Редактирование поста'
+
+    login_url = '/users/login'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -102,7 +109,7 @@ class UpdatePost(DataMixin, UpdateView):
         return get_object_or_404(Posts.published, post_slug=self.kwargs[self.slug_url_kwarg])
 
 
-class DeletePost(DataMixin, DeleteView):
+class DeletePost(LoginRequiredMixin, DataMixin, DeleteView):
     model = Posts
     fields = ['title']
     template_name = 'posts/delete_post.html'
@@ -110,6 +117,8 @@ class DeletePost(DataMixin, DeleteView):
     success_url = reverse_lazy('posts')
     slug_url_kwarg = 'post_slug'
     title_page = 'Удаление поста'
+
+    login_url = '/users/login'
 
     def get_object(self, queryset=None):
         return get_object_or_404(Posts.published, post_slug=self.kwargs[self.slug_url_kwarg])

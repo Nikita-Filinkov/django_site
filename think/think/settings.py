@@ -129,7 +129,6 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -138,4 +137,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_REDIRECT_URL = 'posts'  # имя маршрута
+LOGOUT_REDIRECT_URL = 'posts'  # имя маршрута
+LOGIN_URL = 'users:log'
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'users.authentication.EmailAuthBackend',
+]
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
