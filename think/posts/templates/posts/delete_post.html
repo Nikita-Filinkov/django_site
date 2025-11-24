@@ -1,0 +1,15 @@
+{% extends 'posts/base.html' %}
+
+
+{% block title %} <title>{{ title }}</title> {% endblock %}
+
+{% block posts %}
+<h1>{{ title }}</h1>
+<form action="" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ request.path }}" />
+    <p>Уверены, что хотите удалить пост "{{post}}"?</p>
+     <img src="{{object.images.url}}" width="500" height="500" alt="Чёт не пошло :)">
+    <br><p><button type="submit">Удалить</button></p>
+</form>
+{% endblock %}
